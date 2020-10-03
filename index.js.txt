@@ -1,0 +1,54 @@
+let ronda=1;
+let paso=1;
+
+function reset(){
+  paso=1;
+  ronda=1;
+  document.querySelector("#letras").value="";
+  document.querySelector("#numeros").value="";
+}
+
+document.querySelector("#buttons").addEventListener("click", function(e){
+  if(e.target.tagName=="BUTTON"){
+    if(e.target.value==paso){
+      document.querySelector("#msg").value="";
+      if(ronda==1){
+        document.querySelector("#letras").value+=String.fromCharCode(parseInt(e.target.value)+64);
+      }
+      else{
+        document.querySelector("#numeros").value+=e.target.value;
+      }
+      paso++;
+      if(paso>8){
+        paso=1;
+        ronda++;
+        if(ronda==2){
+          maquina("Inicia la segunda ronda!");
+        }
+        if(ronda>2){
+          maquina("Ha ganado, felicitaciones!!!");
+          reset();
+        }
+      }
+    }
+    else{
+      alert("Botón equivocado, puede mejorar");
+      reset();
+    }
+  }
+});
+
+function maquina(texto){
+  let longitud = texto.length;
+  let cnt=document.querySelector("#msg");
+  let i=0;
+  timer = setInterval(function(){
+     cnt.value = cnt.value.substr(0,cnt.value.length-1) + texto.charAt(i) + "|";
+     if(i >= longitud){
+        clearInterval(timer);
+        cnt.value = cnt.value.substr(0,longitud);
+        return true;
+     } else {
+        i++;
+     }},100);
+};
